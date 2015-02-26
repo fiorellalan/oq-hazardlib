@@ -494,12 +494,14 @@ if [ $BUILD_DEVEL -eq 1 ]; then
 
     ( echo "$pkg_name (${pkg_maj}.${pkg_min}.${pkg_bfx}${pkg_deb}~dev${dt}-${hash}) $pkg_rest"
       echo
+      echo "  [Automatic Script]"
       echo "  * Development version from $hash commit"
       echo
+      cat debian/changelog.orig | sed -n "/^$GEM_DEB_PACKAGE/q;p"
       echo " -- $DEBFULLNAME <$DEBEMAIL>  $(date -d@$dt -R)"
       echo
     )  > debian/changelog
-    cat debian/changelog.orig >> debian/changelog
+    cat debian/changelog.orig | sed -n "/^$GEM_DEB_PACKAGE/,\$ p" >> debian/changelog
     rm debian/changelog.orig
 fi
 
