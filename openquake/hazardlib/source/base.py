@@ -143,7 +143,8 @@ class BaseSeismicSource(object):
             object, False otherwise.
         """
         rup_enc_poly = self.get_rupture_enclosing_polygon(integration_distance)
-        return rup_enc_poly._polygon2d.intersects(shapely_object)
+        return (rup_enc_poly._polygon2d is not None and
+                rup_enc_poly._polygon2d.intersects(shapely_object))
 
 
 @with_slots
