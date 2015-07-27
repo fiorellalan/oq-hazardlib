@@ -65,7 +65,7 @@ def agg_curves(acc, curves):
     :param curves: an array of hazard curves
     :returns: a new accumulator
     """
-    new = numpy.array(acc, numpy.float32)  # copy of the accumulator
+    new = numpy.array(acc)  # copy of the accumulator
     for imt in curves.dtype.fields:
         new[imt] = 1. - (1. - curves[imt]) * (1. - acc[imt])
     return new
