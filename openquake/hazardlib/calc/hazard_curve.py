@@ -38,8 +38,9 @@ def zero_curves(num_sites, imtls):
     :returns: an array of zero curves with length num_sites
     """
     # numpy dtype for the hazard curves
-    imt_dt = numpy.dtype([(imt, float, 1 if imls is None else len(imls))
-                          for imt, imls in imtls.items()])
+    imt_dt = numpy.dtype(
+        [(imt, numpy.float32, 1 if imls is None else len(imls))
+         for imt, imls in imtls.items()])
     zero = numpy.zeros(num_sites, imt_dt)
     return zero
 
@@ -51,7 +52,7 @@ def zero_maps(num_sites, imts):
     :returns: an array of zero curves with length num_sites
     """
     # numpy dtype for the hazard maps
-    imt_dt = numpy.dtype([(imt, float) for imt in imts])
+    imt_dt = numpy.dtype([(imt, numpy.float32) for imt in imts])
     zero = numpy.zeros(num_sites, imt_dt)
     return zero
 
@@ -64,7 +65,7 @@ def agg_curves(acc, curves):
     :param curves: an array of hazard curves
     :returns: a new accumulator
     """
-    new = numpy.array(acc)  # copy of the accumulator
+    new = numpy.array(acc, numpy.float32)  # copy of the accumulator
     for imt in curves.dtype.fields:
         new[imt] = 1. - (1. - curves[imt]) * (1. - acc[imt])
     return new
@@ -175,7 +176,7 @@ def hazard_curves_per_trt(
         number of levels in ``imtls``.
     """
     gnames = list(map(str, gsims))
-    imt_dt = numpy.dtype([(imt, float, len(imtls[imt]))
+    imt_dt = numpy.dtype([(imt, numpy.float32, len(imtls[imt]))
                           for imt in sorted(imtls)])
     imts = {from_string(imt): imls for imt, imls in imtls.items()}
     curves = [numpy.ones(len(sites), imt_dt) for gname in gnames]
