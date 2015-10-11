@@ -64,6 +64,7 @@ setup(
         'scipy',
         'shapely',
         'psutil',
+        'decorator',
     ],
     ext_modules=[geodetic_speedups, geoutils_speedups],
     include_dirs=include_dirs,
