@@ -82,7 +82,6 @@ setup(
         'console_scripts': [
             'oq-lite = openquake.commonlib.commands.__main__:oq_lite']},
     include_package_data=True,
-    namespace_packages=['openquake'],
     test_loader='openquake.baselib.runtests:TestLoader',
     test_suite='openquake.baselib,openquake.hazardlib,openquake.risklib,openquake.commonlib',
     zip_safe=False,
