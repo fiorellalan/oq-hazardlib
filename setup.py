@@ -18,10 +18,9 @@ import os
 import re
 import sys
 from setuptools import setup, find_packages, Extension
-from setuptools import setup, find_packages
-
 
 import numpy
+
 
 def get_version():
     version_re = r"^__version__\s+=\s+['\"]([^'\"]*)['\"]"
@@ -42,6 +41,16 @@ version = get_version()
 url = "http://github.com/gem/oq-hazardlib"
 
 cd = os.path.dirname(os.path.join(__file__))
+
+
+geoutils_speedups = Extension('openquake.hazardlib.geo._utils_speedups',
+                              sources=['speedups/geoutilsmodule.c'],
+                              extra_compile_args=['-Wall', '-O2'])
+geodetic_speedups = Extension('openquake.hazardlib.geo._geodetic_speedups',
+                              sources=['speedups/geodeticmodule.c'],
+                              extra_compile_args=['-Wall', '-O2'])
+
+include_dirs = [numpy.get_include()]
 
 setup(
     name='openquake.hazardlib',
@@ -83,6 +92,6 @@ setup(
             'oq-lite = openquake.commonlib.commands.__main__:oq_lite']},
     include_package_data=True,
     test_loader='openquake.baselib.runtests:TestLoader',
-    test_suite='openquake.baselib,openquake.hazardlib,openquake.risklib,openquake.commonlib',
+    test_suite='openquake.baselib,openquake.hazardlib,openquake.risklib,openquake.commonlib,openquake.calculators',
     zip_safe=False,
 )
