@@ -1,5 +1,5 @@
-# oq-risklib: The OpenQuake Risk Library
-# Copyright (C) 2013-2015, GEM Foundation
+# The OpenQuake Library
+# Copyright (C) 2012-2015, GEM Foundation
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -17,14 +17,17 @@
 import os
 import re
 import sys
+from setuptools import setup, find_packages, Extension
 from setuptools import setup, find_packages
 
+
+import numpy
 
 def get_version():
     version_re = r"^__version__\s+=\s+['\"]([^'\"]*)['\"]"
     version = None
 
-    package_init = 'openquake/risklib/__init__.py'
+    package_init = 'openquake/hazardlib/__init__.py'
     for line in open(package_init, 'r'):
         version_match = re.search(version_re, line, re.M)
         if version_match:
@@ -36,21 +39,26 @@ def get_version():
     return version
 version = get_version()
 
-url = "http://github.com/gem/oq-risklib"
+url = "http://github.com/gem/oq-hazardlib"
 
 cd = os.path.dirname(os.path.join(__file__))
 
 setup(
-    name='openquake.risklib',
+    name='openquake.hazardlib',
     version=version,
-    description="oq-risklib is a library for performing seismic risk analysis",
+    description="oq-hazardlib is a library for performing seismic analysis",
     long_description=open(os.path.join(cd, 'README.md')).read(),
     url=url,
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests', 'tests.*']),
     install_requires=[
         'numpy',
-        'scipy'
+        'scipy',
+        'shapely',
+        'psutil',
     ],
+    ext_modules=[geodetic_speedups, geoutils_speedups],
+    include_dirs=include_dirs,
+    scripts=['openquake/hazardlib/tests/gsim/check_gsim.py'],
     author='GEM Foundation',
     author_email='devops@openquake.org',
     maintainer='GEM Foundation',
@@ -64,17 +72,18 @@ setup(
         'Programming Language :: Python :: 2',
         'Topic :: Scientific/Engineering',
     ),
-    keywords="seismic risk",
+    keywords="seismic hazard risk",
     license="AGPL3",
     platforms=["any"],
-    package_data={"openquake.risklib": [
-        "README.md", "LICENSE"]},
+    package_data={"openquake.hazardlib": [
+        "README.rst", "LICENSE", "CONTRIBUTORS.txt"]},
+    namespace_packages=['openquake'],
     entry_points={
         'console_scripts': [
             'oq-lite = openquake.commonlib.commands.__main__:oq_lite']},
-    namespace_packages=['openquake'],
     include_package_data=True,
+    namespace_packages=['openquake'],
     test_loader='openquake.baselib.runtests:TestLoader',
-    test_suite='openquake.risklib,openquake.commonlib',
+    test_suite='openquake.baselib,openquake.hazardlib,openquake.risklib,openquake.commonlib',
     zip_safe=False,
 )

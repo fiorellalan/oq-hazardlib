@@ -6,6 +6,8 @@
 Welcome to openquake's documentation!
 =====================================
 
+.. include:: ../README.rst
+
 Contents:
 
 .. toctree::
@@ -16,7 +18,14 @@ Contents:
    openquake.baselib
    openquake.risklib
    openquake.commonlib
-
+   source
+   scalerel
+   mfd
+   gsim/index
+   tom
+   calc
+   site
+   other
 
 Indices and tables
 ==================
